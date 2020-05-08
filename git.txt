@@ -57,3 +57,24 @@
 	3).检测是否连接成功$ ssh -T git@github.com。提示Hi lmjgyy! You've successfully authenticated, but GitHub does not provide shell access.
 	则连接成功，这时可以正常push了
 五、分支管理
+1.创建与合并分支
+	1).$ git checkout -b dev (创建并切换分支) == git branch dev => git checkout dev => git add . => git commit -m 'dev'
+	   或 $ git switch -c dev
+	2).切换分支，合并分支，删除分支
+	   $ git checkout master
+	   $ git merge dev -m 'merge'
+	   $ git branch -d dev
+2.解决冲突
+	1).git merge => git status => git merge --abort
+	2).打开文件解决冲突并且git add .
+	3).git log --graph --pretty=oneline --abbrev-commit(查看分支状态)或git log --graph
+3.分支管理策略
+	$ git merge --no-ff -m "merge with no-ff" dev(--no-ff用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，
+	  而fast forward合并就看不出来曾经做过合并)
+4.bug分支(处理bug)
+	当你在开发dev分支时，master上出现bug，此时修建一个bug分支修复bug，但是你的dev上的修改还不想提交
+	1).$ git stash(把当前工作现场“储藏”起来，等以后恢复现场后继续工作)
+	2).$ git stash list
+	3).$ git stash apply => git stash drop(git stash apply恢复，但是恢复后，stash内容并不删除，需要用git stash drop来删除)
+	   $ git stash pop(恢复的同时把stash内容也删了)
+	4).$ git stash apply stash@{0}(恢复指定的stash)
