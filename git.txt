@@ -1,0 +1,59 @@
+一、安装git
+1.linux：
+	1).查看是否安装sudo apt-get install git
+	2).Debian或Ubuntu Linux 安装 sudo apt-get install git
+	3).老一点的Debian或Ubuntu Linux，sudo apt-get install git-core
+	4).其他Linux版本从Git官网下载源码，然后解压，依次输入：./config，make，sudo make install这几个命令安装就好
+2.Windows
+	1).Git官网直接下载安装程序，然后按默认选项安装即可
+	2).设置：
+		$ git config --global user.name "Your Name"
+		$ git config --global user.email "email@example.com"
+二、创建版本库
+1.创建一个版本库
+	1).创建一个空目录：
+		$ mkdir learngit
+		$ cd learngit
+		$ pwd(显示当前目录) => /Users/michael/learngit
+	2).$ git init(目录变成Git可以管理的仓库) => ~ -ah (可见git)
+		tips: Initialized empty Git repository in /Users/michael/learngit/.git/
+	3).$ git add readme.txt(将文件加入暂存区)
+	4).$ git commit -m "wrote a readme file"(文件提交到仓库)
+	5).$ git log --pretty=oneline(输出信息太多) => --pretty=oneline参数
+2.版本回退
+	1).$ git reset --hard HEAD^(回退版本 HEAD^^ =>上上版本 => HEAD~100)(清除修改)
+	2).$ git reset --hard 1094a (恢复到回退前)
+	3).$ git reflog (记录你的每一次命令)
+3.工作区和暂存区
+	stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD
+	第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+	第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+4.管理修改
+	第一次修改，并add，再次修改，并commit，此时commit的修改是第一次的，因为第二次修改在工作区，没有提交到暂存区
+	1).$ git diff HEAD -- readme.txt (比较工作区和版本库最新版本的区别)
+5.撤销修改
+	1).$ git checkout -- readme.txt(文件在工作区的修改全部撤销)(清除修改) 修改readme.txt boss is cleaver => boss is stupid
+	两种情况：
+	 *自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态 => readme.txt boss is cleaver
+	 *已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态 boss is stupid => boss isn't stupid 回退 => boss is stupid
+	2).$ git restore -- readme.txt
+	两种情况：
+	 *git restore --staged 将文件从暂存区撤出，但不会撤销文件的更改 =>已经add,尚未commit
+	 *git resore 将不在暂存区的文件撤销更改(清除修改)=>尚未add
+6.删除文件
+	1).rm <file> git在工作区或者暂存区也就是commit之前用rm，同时可以用git checkout -- <file>恢复文件
+	2).git rm <file> git commit 之后，不能用git checkout 恢复
+三、远程仓库(创建git本地仓，创建github远程仓，并同步两个仓)
+	1).登陆github，然后右上角找到repositories new创建新仓库命名learngit，此时仓库为空
+	2).创建本地仓，或者关联已有本地仓，git remote add origin git@github.com:lmjgyy/learngit.git
+	3).在github的settings/Manage access添加邮箱
+	3).把本地库的所有内容推送到远程库(具体看第四点)
+	 *git push -u origin master(-u参数能把本地master推送到远程新master，并关联本地master和远程master)，之后可简化命令
+四、连接github
+	1).在还未连上github时，提交git push origin master:dev,提示Please make sure you have the correct access rights
+	此时是还未连上的。
+	2).$ ssh-keygen -t rsa -C "a1043107645@qq.com" 在git上设置github邮箱之后确定生成ssh秘钥在user文件夹下，复制public文件
+	到github/settings/ssh key
+	3).检测是否连接成功$ ssh -T git@github.com。提示Hi lmjgyy! You've successfully authenticated, but GitHub does not provide shell access.
+	则连接成功，这时可以正常push了
+五、分支管理

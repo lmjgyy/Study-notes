@@ -1,0 +1,110 @@
+一、sass在vue中的使用
+1.npm install node-sass --save-dev 		//安装node-sass 
+2.npm install sass-loader --save-dev 		//安装sass-loader 
+3.npm install style-loader --save-dev 		//安装style-loader
+4.	1).vue-cli 3.0：直接在style中lang="scss"
+	2).vue-cli 2.0 在build下webpack.base.conf.js中：
+		{
+			test: /\.scss$/,
+			loader: 'sass-loader!style-loader!css-loader'
+		}
+5.err: this.getResolve is not a function =>sass-loader版本过高 => npm install sass-loader@7.3.1 --save-dev
+二、sass基本用法
+1.编码格式：@charset:"utf-8";
+2.变量：以$开头
+	1).常规：$side: left 或 $var:50px 或 $color:red
+	2).嵌入：border-#{$side}-radius: 5px =>写在#{}之中
+3.计算功能： margin：(14px/2) 或 right：$var * 10%
+4.嵌套： 
+	1).选择器嵌套
+		div{
+			h1{
+				color：$color
+			}
+		}
+	2).属性嵌套（属性后面要加：）
+		p {
+	　　　　border: {
+	　　　　　　color: red;
+	　　　　}
+	　　}
+	3).伪类嵌套 &
+5.注释（两种注释风格）
+	1).标准注释风格/* comment */ ，会保留到编译后的文件。/*! comment */ =>重要注释（压缩模式也会保留）
+	2).单行注释 // comment，只保留在SASS源文件中，编译后被省略。
+三、代码的重用
+1.继承：SASS允许一个选择器，继承另一个选择器。 => @extend
+	如：.class1 {
+	　　　　border: 1px solid #ddd;
+	　　}
+	class2要继承class1，就要使用@extend命令：
+		.class2 {
+	　　　　@extend .class1;
+	　　　　font-size:120%;
+	　　}
+2.Mixin：使用@mixin命令，定义一个代码块。=> @include
+	如：@mixin left {
+	　　　　float: left;
+	　　　　margin-left: 10px;
+	　　}
+	使用@include命令，调用这个mixin。
+		div {
+	　　　　@include left;
+	　　}
+	mixin的强大之处，在于可以指定参数和默认值。
+	如：@mixin left($value: 10px) {
+	　　　　float: left;
+	　　　　margin-right: $value;
+	　　}
+	使用的时候，根据需要加入参数：
+		div {
+	　　　　@include left(20px);
+	　　}
+3.颜色函数（SASS提供了一些内置的颜色函数，以便生成系列颜色）
+	如： lighten(#cc3, 10%) // #d6d65c
+	　　darken(#cc3, 10%) // #a3a329
+	　　grayscale(#cc3) // #808080
+	　　complement(#cc3) // #33c
+4.插入文件（@import命令，用来插入外部文件）如： @import "path/filename.scss";
+四、高级用法
+1).条件语句:
+	@if可以用来判断
+	如： p {
+	　　　　@if 1 + 1 == 2 { border: 1px solid; }
+	　　　　@if 5 < 3 { border: 2px dotted; }
+	　　}
+	配套的还有@else命令：
+	如：@if lightness($color) > 30% {
+	　　　　background-color: #000;
+	　　} @else {
+	　　　　background-color: #fff;
+	　　}
+2).循环语句（for、while、each）
+	for：=> from to 或 from through
+	如：@for $i from 1 through 3
+		{
+			.item-#{$i}
+			{
+				width:(20px * $i);
+			}
+		}
+	while: 
+	如：$i: 6;
+	　　@while $i > 0 {
+	　　　　.item-#{$i} { width: 2em * $i; }
+	　　　　$i: $i - 2;
+	　　}
+	each: 
+	如：@each $member in a, b, c, d {
+	　　　　.#{$member} {
+	　　　　　　background-image: url("/image/#{$member}.jpg");
+	　　　　}
+	　　}
+3).自定义函数(可默认传参)
+	如：@function double($n) {
+			@return $n * 2
+		}
+		#sidebar {
+	　　　　width: double(5px);
+	　　}
+	
