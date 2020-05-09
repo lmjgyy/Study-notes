@@ -49,7 +49,7 @@
 	3).在github的settings/Manage access添加邮箱
 	3).把本地库的所有内容推送到远程库(具体看第四点)
 	 *git push -u origin master(-u参数能把本地master推送到远程新master，并关联本地master和远程master)，之后可简化命令
-四、连接github
+四、连接github (git 创建新分支，执行第三条，然后执行git push -u origin sit)
 	1).在还未连上github时，提交git push origin master:dev,提示Please make sure you have the correct access rights
 	此时是还未连上的。
 	2).$ ssh-keygen -t rsa -C "a1043107645@qq.com" 在git上设置github邮箱之后确定生成ssh秘钥在user文件夹下，复制public文件
@@ -78,3 +78,27 @@
 	3).$ git stash apply => git stash drop(git stash apply恢复，但是恢复后，stash内容并不删除，需要用git stash drop来删除)
 	   $ git stash pop(恢复的同时把stash内容也删了)
 	4).$ git stash apply stash@{0}(恢复指定的stash)
+	5).dev stash之后切换分支master，switch -c bug 新建bug分支，改完分支后bug分支merge到master，
+	   切换分支dev，然后git cherry-pick commitid合并bug分支修改的commit过来
+5.feature(新功能分支)
+	背景，开发新功能分支feature，后未开发完丢弃该分支并销毁，git branch -D feature
+6.个人协作
+	1.设置remote
+	  * git remote add origin <url>
+	  * git remote -v
+	2.推送分支
+	  *	git push origin master
+	  * git push origin dev(推送到其他分支)
+	3.抓取分支
+	  * git clone -b <branch> <url>
+	  * git pull <remote><branch>
+	  $ git branch --set-upstream-to=origin/dev dev
+	  如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>
+六、命令行补充
+1.commit
+	$ git commit - m 'xxx' --amend (覆盖上次commit可重新说明)
+2.remote
+	$ git remote rm (删除远程主机
+3.fetch
+4.branch
+	$ git branch -a 所有分支 git branch -r 查看远程分支
