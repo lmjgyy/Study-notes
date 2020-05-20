@@ -45,7 +45,7 @@
 	2).git rm <file> git commit 之后，不能用git checkout 恢复
 三、远程仓库(创建git本地仓，创建github远程仓，并同步两个仓)
 	1).登陆github，然后右上角找到repositories new创建新仓库命名learngit，此时仓库为空
-	2).创建本地仓，或者关联已有本地仓，git remote add origin git@github.com:lmjgyy/learngit.git
+	2).创建本地仓，或者关联已有本地仓，formatter: '{value} kg'git remote add origin git@github.com:lmjgyy/learngit.git
 	3).在github的settings/Manage access添加邮箱
 	3).把本地库的所有内容推送到远程库(具体看第四点)
 	 *git push -u origin master(-u参数能把本地master推送到远程新master，并关联本地master和远程master)，之后可简化命令
@@ -102,3 +102,61 @@
 3.fetch
 4.branch
 	$ git branch -a 所有分支 git branch -r 查看远程分支
+5.rebase -i(修改提交记录) commitid(起算点)
+	1).vim命令
+	一般模式 => 编辑模式 i,I,a,A,o,O,r,R => 屏幕的最下一行出现“INSERT或REPLACE”的字样 ,退出编辑模式esc
+		小i  在光标所在行位置停止不动开始写入内容
+		大I  在光标所在行行首开始写入内容
+		小a  在光标所在行当前字符后开始写入内容
+		大A  在光标所在行行尾开始写入内容
+		小o  在光标所在行下一行开始写入内容
+		大O  在光标所在行上一行开始写入内容
+	命令模式下
+		:w 保存文本
+		:q 退出vim
+		:wq 保存退出
+		:e!将文档还原成最原始状态
+		ZZ 若文档没有改动，则不储存离开，若文档改动过，则储存后离开，等同于:wq
+		:set nu 在每行的行首显示行号
+		:set nonu 取消行号
+	
+	.复制的命令是y，即yank（提起） ，常用的命令如下： 
+		y    在使用v模式选定了某一块的时候，复制选定块到缓冲区用； 
+		yy   复制整行（nyy或者yny ，复制n行，n为数字）； 
+		y^   复制当前到行头的内容； 
+		y$   复制当前到行尾的内容； 
+		yw   复制一个word （nyw或者ynw，复制n个word，n为数字）； 
+		yG   复制至档尾（nyG或者ynG，复制到第n行，例如1yG或者y1G，复制到档尾）  
+	粘贴的命令式p，即put（放下） 
+		p    小写p代表贴至游标后（下），因为游标是在具体字符的位置上，所以实际是在该字符的后面 
+		P    大写P代表贴至游标前（上） 
+	剪切的命令是d，即delete，d与y命令基本类似，所以两个命令用法一样，包括含有数字的用法.  
+		d    剪切选定块到缓冲区； 
+		dd   剪切整行 
+		d^   剪切至行首 
+		d$   剪切至行尾 
+		dw   剪切一个word 
+		dG   剪切至档尾  
+	2). 如果是要修改commit 信息
+		进入编辑模式改掉信息，并把pick改成edit，然后保存退出
+		再git commit --amend 进入vim 输入修改信息 然后保存退出
+		最后 git rebase --continue
+		vim 内command
+		变基时有六个命令可用：
+		pick
+		pick只是意味着包括提交。重新进行命令时，重新安排pick命令的顺序会更改提交的顺序。如果选择不包括提交，则应删除整行。
+		====>修改顺序，删除提交
+		reword
+		该reword命令与相似pick，但是使用后，重新设置过程将暂停并为您提供更改提交消息的机会。提交所做的任何更改均不受影响。
+
+		edit
+		如果您选择edit提交，则将有机会修改提交，这意味着您可以完全添加或更改提交。您还可以进行更多提交，然后再继续进行变基。这使您可以将大型提交拆分为较小的提交，或者删除在提交中所做的错误更改。
+
+		squash
+		该命令使您可以将两个或多个提交合并为一个提交。提交被压缩到其上方的提交中。Git使您有机会编写描述这两个更改的新提交消息。
+
+		fixup
+		这类似于squash，但是要合并的提交已丢弃其消息。提交仅合并到其上方的提交中，并且较早提交的消息用于描述这两个更改。
+
+		exec
+		这使您可以对提交运行任意的Shell命令。
