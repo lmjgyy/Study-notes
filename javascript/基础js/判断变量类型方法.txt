@@ -1,0 +1,16 @@
+一、变量类型
+		常用的变量类型有11种：
+		Number,
+		String,
+		Boolean,
+		Object,
+		Array,
+		Json,
+		Function,
+		undefined,
+		Null,
+		Date,
+		RegExp,
+		Error
+1.typeof(判断出四种，分别是number，string，boolean，object，剩余的均被检测为object)
+2.

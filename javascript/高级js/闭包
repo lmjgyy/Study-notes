@@ -1,0 +1,27 @@
+一、闭包的概念：闭包就是能够读取其他函数内部变量的函数
+二、闭包的用途：
+	1.可以读取函数内部的变量
+	2.让这些变量的值始终保持在内存中
+三、闭包的使用
+	1.案例： 
+	function f1(){
+
+　　　　var n=999;
+
+　　　　nAdd=function(){n+=1}
+
+　　　　function f2(){
+　　　　　　alert(n);
+　　　　}
+
+　　　　return f2;
+
+　　}
+
+　　var result=f1();
+
+　　result(); // 999
+
+　　nAdd();
+
+　　result(); // 1000

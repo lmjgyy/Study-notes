@@ -1,0 +1,24 @@
+1.const modulesFiles = require.context('./modules', true, /\.js$/)
+
+	// you do not need `import app from './modules/app'`
+	// it will auto require all vuex module from modules file
+	const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+	  // set './app.js' => 'app'
+	  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')   ===> 'app'
+	  const value = modulesFiles(modulePath)						===> { default: .... }
+	  modules[moduleName] = value.default
+	  return modules
+	}, {})
+	
+	require.context 接受三个参数， 
+	resolve	====》	webpackContextResolve(req) {
+						var id = map[req];
+						if(!(id + 1)) { // check for number or string
+							var e = new Error("Cannot find module '" + req + "'");
+							e.code = 'MODULE_NOT_FOUND';
+							throw e;
+					}
+	keys	====》["./dashboard.svg", "./example.svg", "./eye-open.svg", "./eye.svg", "./form.svg", "./link.svg", "./nested.svg"]
+	id      ====》 ./src/icons/svg sync \.svg$   路径、同步、 匹配正则
+2.RegExp.$1 为匹配到的元素 ======>括号内的元素
+	
